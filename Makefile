@@ -22,7 +22,7 @@ TESTPARALLELISM := 10
 build::
 	go install -ldflags "-X github.com/pulumi/pulumi-openstack/pkg/version.Version=${VERSION}" ${PROJECT}/cmd/${TFGEN}
 	go install -ldflags "-X github.com/pulumi/pulumi-openstack/pkg/version.Version=${VERSION}" ${PROJECT}/cmd/${PROVIDER}
-	for LANGUAGE in "nodejs" "python" "go" ; do \
+	for LANGUAGE in "nodejs" "python" "go" "dotnet"; do \
 		$(TFGEN) $$LANGUAGE --overlays overlays/$$LANGUAGE/ --out ${PACKDIR}/$$LANGUAGE/ || exit 3 ; \
 	done
 	cd ${PACKDIR}/nodejs/ && \
@@ -42,6 +42,8 @@ build::
 		sed -i.bak -e "s/\$${VERSION}/$(PYPI_VERSION)/g" -e "s/\$${PLUGIN_VERSION}/$(VERSION)/g" ./bin/setup.py && \
 		rm ./bin/setup.py.bak && \
 		cd ./bin && $(PYTHON) setup.py build sdist
+	cd ${PACKDIR}/dotnet/ && \
+		dotnet build
 
 lint::
 	$(GOMETALINTER) ./cmd/... resources.go | sort ; exit "$${PIPESTATUS[0]}"
@@ -57,6 +59,8 @@ install::
 		(yarn unlink > /dev/null 2>&1 || true) && \
 		yarn link
 	cd ${PACKDIR}/python/bin && $(PIP) install --user -e .
+	cd ${PACKDIR}/dotnet/ && \
+		dotnet publish
 
 test_all::
 	PATH=$(PULUMI_BIN):$(PATH) go test -v -cover -timeout 1h -parallel ${TESTPARALLELISM} ./examples
