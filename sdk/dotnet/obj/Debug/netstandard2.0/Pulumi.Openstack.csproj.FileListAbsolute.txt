@@ -1,0 +1,12 @@
+/home/fraser/go/src/github.com/pulumi/pulumi-openstack/sdk/dotnet/bin/Debug/netstandard2.0/Pulumi.Openstack.deps.json
+/home/fraser/go/src/github.com/pulumi/pulumi-openstack/sdk/dotnet/bin/Debug/netstandard2.0/Pulumi.Openstack.dll
+/home/fraser/go/src/github.com/pulumi/pulumi-openstack/sdk/dotnet/bin/Debug/netstandard2.0/Pulumi.Openstack.pdb
+/home/fraser/go/src/github.com/pulumi/pulumi-openstack/sdk/dotnet/bin/Debug/netstandard2.0/Pulumi.dll
+/home/fraser/go/src/github.com/pulumi/pulumi-openstack/sdk/dotnet/bin/Debug/netstandard2.0/Pulumi.pdb
+/home/fraser/go/src/github.com/pulumi/pulumi-openstack/sdk/dotnet/obj/Debug/netstandard2.0/Pulumi.Openstack.csprojAssemblyReference.cache
+/home/fraser/go/src/github.com/pulumi/pulumi-openstack/sdk/dotnet/obj/Debug/netstandard2.0/Pulumi.Openstack.csproj.CoreCompileInputs.cache
+/home/fraser/go/src/github.com/pulumi/pulumi-openstack/sdk/dotnet/obj/Debug/netstandard2.0/Pulumi.Openstack.AssemblyInfoInputs.cache
+/home/fraser/go/src/github.com/pulumi/pulumi-openstack/sdk/dotnet/obj/Debug/netstandard2.0/Pulumi.Openstack.AssemblyInfo.cs
+/home/fraser/go/src/github.com/pulumi/pulumi-openstack/sdk/dotnet/obj/Debug/netstandard2.0/Pulumi.Openstack.csproj.CopyComplete
+/home/fraser/go/src/github.com/pulumi/pulumi-openstack/sdk/dotnet/obj/Debug/netstandard2.0/Pulumi.Openstack.dll
+/home/fraser/go/src/github.com/pulumi/pulumi-openstack/sdk/dotnet/obj/Debug/netstandard2.0/Pulumi.Openstack.pdb
