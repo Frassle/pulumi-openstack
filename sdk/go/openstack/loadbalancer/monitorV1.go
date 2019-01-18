@@ -85,12 +85,12 @@ func GetMonitorV1(ctx *pulumi.Context,
 
 // URN is this resource's unique name assigned by Pulumi.
 func (r *MonitorV1) URN() *pulumi.URNOutput {
-	return r.s.URN
+	return r.s.URN()
 }
 
 // ID is this resource's unique identifier assigned by its provider.
 func (r *MonitorV1) ID() *pulumi.IDOutput {
-	return r.s.ID
+	return r.s.ID()
 }
 
 // The administrative state of the monitor.
@@ -106,7 +106,7 @@ func (r *MonitorV1) Delay() *pulumi.IntOutput {
 	return (*pulumi.IntOutput)(r.s.State["delay"])
 }
 
-// equired for HTTP(S) types. Expected HTTP codes
+// Required for HTTP(S) types. Expected HTTP codes
 // for a passing HTTP(S) monitor. You can either specify a single status like
 // "200", or a range like "200-202". Changing this updates the expected_codes
 // of the existing monitor.
@@ -172,7 +172,7 @@ type MonitorV1State struct {
 	// The time, in seconds, between sending probes to members.
 	// Changing this creates a new monitor.
 	Delay interface{}
-	// equired for HTTP(S) types. Expected HTTP codes
+	// Required for HTTP(S) types. Expected HTTP codes
 	// for a passing HTTP(S) monitor. You can either specify a single status like
 	// "200", or a range like "200-202". Changing this updates the expected_codes
 	// of the existing monitor.
@@ -216,7 +216,7 @@ type MonitorV1Args struct {
 	// The time, in seconds, between sending probes to members.
 	// Changing this creates a new monitor.
 	Delay interface{}
-	// equired for HTTP(S) types. Expected HTTP codes
+	// Required for HTTP(S) types. Expected HTTP codes
 	// for a passing HTTP(S) monitor. You can either specify a single status like
 	// "200", or a range like "200-202". Changing this updates the expected_codes
 	// of the existing monitor.

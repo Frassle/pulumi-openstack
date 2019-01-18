@@ -19,6 +19,7 @@ func NewRouter(ctx *pulumi.Context,
 	if args == nil {
 		inputs["adminStateUp"] = nil
 		inputs["availabilityZoneHints"] = nil
+		inputs["description"] = nil
 		inputs["distributed"] = nil
 		inputs["enableSnat"] = nil
 		inputs["externalFixedIps"] = nil
@@ -26,12 +27,14 @@ func NewRouter(ctx *pulumi.Context,
 		inputs["externalNetworkId"] = nil
 		inputs["name"] = nil
 		inputs["region"] = nil
+		inputs["tags"] = nil
 		inputs["tenantId"] = nil
 		inputs["valueSpecs"] = nil
 		inputs["vendorOptions"] = nil
 	} else {
 		inputs["adminStateUp"] = args.AdminStateUp
 		inputs["availabilityZoneHints"] = args.AvailabilityZoneHints
+		inputs["description"] = args.Description
 		inputs["distributed"] = args.Distributed
 		inputs["enableSnat"] = args.EnableSnat
 		inputs["externalFixedIps"] = args.ExternalFixedIps
@@ -39,6 +42,7 @@ func NewRouter(ctx *pulumi.Context,
 		inputs["externalNetworkId"] = args.ExternalNetworkId
 		inputs["name"] = args.Name
 		inputs["region"] = args.Region
+		inputs["tags"] = args.Tags
 		inputs["tenantId"] = args.TenantId
 		inputs["valueSpecs"] = args.ValueSpecs
 		inputs["vendorOptions"] = args.VendorOptions
@@ -58,6 +62,7 @@ func GetRouter(ctx *pulumi.Context,
 	if state != nil {
 		inputs["adminStateUp"] = state.AdminStateUp
 		inputs["availabilityZoneHints"] = state.AvailabilityZoneHints
+		inputs["description"] = state.Description
 		inputs["distributed"] = state.Distributed
 		inputs["enableSnat"] = state.EnableSnat
 		inputs["externalFixedIps"] = state.ExternalFixedIps
@@ -65,6 +70,7 @@ func GetRouter(ctx *pulumi.Context,
 		inputs["externalNetworkId"] = state.ExternalNetworkId
 		inputs["name"] = state.Name
 		inputs["region"] = state.Region
+		inputs["tags"] = state.Tags
 		inputs["tenantId"] = state.TenantId
 		inputs["valueSpecs"] = state.ValueSpecs
 		inputs["vendorOptions"] = state.VendorOptions
@@ -78,12 +84,12 @@ func GetRouter(ctx *pulumi.Context,
 
 // URN is this resource's unique name assigned by Pulumi.
 func (r *Router) URN() *pulumi.URNOutput {
-	return r.s.URN
+	return r.s.URN()
 }
 
 // ID is this resource's unique identifier assigned by its provider.
 func (r *Router) ID() *pulumi.IDOutput {
-	return r.s.ID
+	return r.s.ID()
 }
 
 // Administrative up/down status for the router
@@ -98,6 +104,11 @@ func (r *Router) AdminStateUp() *pulumi.BoolOutput {
 // this creates a new router.
 func (r *Router) AvailabilityZoneHints() *pulumi.ArrayOutput {
 	return (*pulumi.ArrayOutput)(r.s.State["availabilityZoneHints"])
+}
+
+// Human-readable description for the router.
+func (r *Router) Description() *pulumi.StringOutput {
+	return (*pulumi.StringOutput)(r.s.State["description"])
 }
 
 // Indicates whether or not to create a
@@ -153,6 +164,11 @@ func (r *Router) Region() *pulumi.StringOutput {
 	return (*pulumi.StringOutput)(r.s.State["region"])
 }
 
+// A set of string tags for the router.
+func (r *Router) Tags() *pulumi.ArrayOutput {
+	return (*pulumi.ArrayOutput)(r.s.State["tags"])
+}
+
 // The owner of the floating IP. Required if admin wants
 // to create a router for another tenant. Changing this creates a new router.
 func (r *Router) TenantId() *pulumi.StringOutput {
@@ -180,6 +196,8 @@ type RouterState struct {
 	// network resources highly available. Used for resources with high availability so that they are scheduled on different availability zones. Changing
 	// this creates a new router.
 	AvailabilityZoneHints interface{}
+	// Human-readable description for the router.
+	Description interface{}
 	// Indicates whether or not to create a
 	// distributed router. The default policy setting in Neutron restricts
 	// usage of this property to administrative users only.
@@ -212,6 +230,8 @@ type RouterState struct {
 	// `region` argument of the provider is used. Changing this creates a new
 	// router.
 	Region interface{}
+	// A set of string tags for the router.
+	Tags interface{}
 	// The owner of the floating IP. Required if admin wants
 	// to create a router for another tenant. Changing this creates a new router.
 	TenantId interface{}
@@ -232,6 +252,8 @@ type RouterArgs struct {
 	// network resources highly available. Used for resources with high availability so that they are scheduled on different availability zones. Changing
 	// this creates a new router.
 	AvailabilityZoneHints interface{}
+	// Human-readable description for the router.
+	Description interface{}
 	// Indicates whether or not to create a
 	// distributed router. The default policy setting in Neutron restricts
 	// usage of this property to administrative users only.
@@ -264,6 +286,8 @@ type RouterArgs struct {
 	// `region` argument of the provider is used. Changing this creates a new
 	// router.
 	Region interface{}
+	// A set of string tags for the router.
+	Tags interface{}
 	// The owner of the floating IP. Required if admin wants
 	// to create a router for another tenant. Changing this creates a new router.
 	TenantId interface{}

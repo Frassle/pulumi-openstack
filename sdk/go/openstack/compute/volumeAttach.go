@@ -27,11 +27,13 @@ func NewVolumeAttach(ctx *pulumi.Context,
 	if args == nil {
 		inputs["device"] = nil
 		inputs["instanceId"] = nil
+		inputs["multiattach"] = nil
 		inputs["region"] = nil
 		inputs["volumeId"] = nil
 	} else {
 		inputs["device"] = args.Device
 		inputs["instanceId"] = args.InstanceId
+		inputs["multiattach"] = args.Multiattach
 		inputs["region"] = args.Region
 		inputs["volumeId"] = args.VolumeId
 	}
@@ -50,6 +52,7 @@ func GetVolumeAttach(ctx *pulumi.Context,
 	if state != nil {
 		inputs["device"] = state.Device
 		inputs["instanceId"] = state.InstanceId
+		inputs["multiattach"] = state.Multiattach
 		inputs["region"] = state.Region
 		inputs["volumeId"] = state.VolumeId
 	}
@@ -62,12 +65,12 @@ func GetVolumeAttach(ctx *pulumi.Context,
 
 // URN is this resource's unique name assigned by Pulumi.
 func (r *VolumeAttach) URN() *pulumi.URNOutput {
-	return r.s.URN
+	return r.s.URN()
 }
 
 // ID is this resource's unique identifier assigned by its provider.
 func (r *VolumeAttach) ID() *pulumi.IDOutput {
-	return r.s.ID
+	return r.s.ID()
 }
 
 // The device of the volume attachment (ex: `/dev/vdc`).
@@ -83,6 +86,11 @@ func (r *VolumeAttach) Device() *pulumi.StringOutput {
 // The ID of the Instance to attach the Volume to.
 func (r *VolumeAttach) InstanceId() *pulumi.StringOutput {
 	return (*pulumi.StringOutput)(r.s.State["instanceId"])
+}
+
+// Enable attachment of multiattach-capable volumes.
+func (r *VolumeAttach) Multiattach() *pulumi.BoolOutput {
+	return (*pulumi.BoolOutput)(r.s.State["multiattach"])
 }
 
 // The region in which to obtain the V2 Compute client.
@@ -109,6 +117,8 @@ type VolumeAttachState struct {
 	Device interface{}
 	// The ID of the Instance to attach the Volume to.
 	InstanceId interface{}
+	// Enable attachment of multiattach-capable volumes.
+	Multiattach interface{}
 	// The region in which to obtain the V2 Compute client.
 	// A Compute client is needed to create a volume attachment. If omitted, the
 	// `region` argument of the provider is used. Changing this creates a
@@ -129,6 +139,8 @@ type VolumeAttachArgs struct {
 	Device interface{}
 	// The ID of the Instance to attach the Volume to.
 	InstanceId interface{}
+	// Enable attachment of multiattach-capable volumes.
+	Multiattach interface{}
 	// The region in which to obtain the V2 Compute client.
 	// A Compute client is needed to create a volume attachment. If omitted, the
 	// `region` argument of the provider is used. Changing this creates a

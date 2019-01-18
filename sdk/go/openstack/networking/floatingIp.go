@@ -25,20 +25,24 @@ func NewFloatingIp(ctx *pulumi.Context,
 	inputs := make(map[string]interface{})
 	if args == nil {
 		inputs["address"] = nil
+		inputs["description"] = nil
 		inputs["fixedIp"] = nil
 		inputs["pool"] = nil
 		inputs["portId"] = nil
 		inputs["region"] = nil
 		inputs["subnetId"] = nil
+		inputs["tags"] = nil
 		inputs["tenantId"] = nil
 		inputs["valueSpecs"] = nil
 	} else {
 		inputs["address"] = args.Address
+		inputs["description"] = args.Description
 		inputs["fixedIp"] = args.FixedIp
 		inputs["pool"] = args.Pool
 		inputs["portId"] = args.PortId
 		inputs["region"] = args.Region
 		inputs["subnetId"] = args.SubnetId
+		inputs["tags"] = args.Tags
 		inputs["tenantId"] = args.TenantId
 		inputs["valueSpecs"] = args.ValueSpecs
 	}
@@ -56,11 +60,13 @@ func GetFloatingIp(ctx *pulumi.Context,
 	inputs := make(map[string]interface{})
 	if state != nil {
 		inputs["address"] = state.Address
+		inputs["description"] = state.Description
 		inputs["fixedIp"] = state.FixedIp
 		inputs["pool"] = state.Pool
 		inputs["portId"] = state.PortId
 		inputs["region"] = state.Region
 		inputs["subnetId"] = state.SubnetId
+		inputs["tags"] = state.Tags
 		inputs["tenantId"] = state.TenantId
 		inputs["valueSpecs"] = state.ValueSpecs
 	}
@@ -73,12 +79,12 @@ func GetFloatingIp(ctx *pulumi.Context,
 
 // URN is this resource's unique name assigned by Pulumi.
 func (r *FloatingIp) URN() *pulumi.URNOutput {
-	return r.s.URN
+	return r.s.URN()
 }
 
 // ID is this resource's unique identifier assigned by its provider.
 func (r *FloatingIp) ID() *pulumi.IDOutput {
-	return r.s.ID
+	return r.s.ID()
 }
 
 // The actual/specific floating IP to obtain. By default,
@@ -87,6 +93,11 @@ func (r *FloatingIp) ID() *pulumi.IDOutput {
 // user or project.
 func (r *FloatingIp) Address() *pulumi.StringOutput {
 	return (*pulumi.StringOutput)(r.s.State["address"])
+}
+
+// Human-readable description for the floating IP.
+func (r *FloatingIp) Description() *pulumi.StringOutput {
+	return (*pulumi.StringOutput)(r.s.State["description"])
 }
 
 // Fixed IP of the port to associate with this floating IP. Required if
@@ -122,6 +133,11 @@ func (r *FloatingIp) SubnetId() *pulumi.StringOutput {
 	return (*pulumi.StringOutput)(r.s.State["subnetId"])
 }
 
+// A set of string tags for the floating IP.
+func (r *FloatingIp) Tags() *pulumi.ArrayOutput {
+	return (*pulumi.ArrayOutput)(r.s.State["tags"])
+}
+
 // The target tenant ID in which to allocate the floating
 // IP, if you specify this together with a port_id, make sure the target port
 // belongs to the same tenant. Changing this creates a new floating IP (which
@@ -142,6 +158,8 @@ type FloatingIpState struct {
 	// an admin user or have had a custom policy or role applied to your OpenStack
 	// user or project.
 	Address interface{}
+	// Human-readable description for the floating IP.
+	Description interface{}
 	// Fixed IP of the port to associate with this floating IP. Required if
 	// the port has multiple fixed IPs.
 	FixedIp interface{}
@@ -160,6 +178,8 @@ type FloatingIpState struct {
 	// The subnet ID of the floating IP pool. Specify this if
 	// the floating IP network has multiple subnets.
 	SubnetId interface{}
+	// A set of string tags for the floating IP.
+	Tags interface{}
 	// The target tenant ID in which to allocate the floating
 	// IP, if you specify this together with a port_id, make sure the target port
 	// belongs to the same tenant. Changing this creates a new floating IP (which
@@ -176,6 +196,8 @@ type FloatingIpArgs struct {
 	// an admin user or have had a custom policy or role applied to your OpenStack
 	// user or project.
 	Address interface{}
+	// Human-readable description for the floating IP.
+	Description interface{}
 	// Fixed IP of the port to associate with this floating IP. Required if
 	// the port has multiple fixed IPs.
 	FixedIp interface{}
@@ -194,6 +216,8 @@ type FloatingIpArgs struct {
 	// The subnet ID of the floating IP pool. Specify this if
 	// the floating IP network has multiple subnets.
 	SubnetId interface{}
+	// A set of string tags for the floating IP.
+	Tags interface{}
 	// The target tenant ID in which to allocate the floating
 	// IP, if you specify this together with a port_id, make sure the target port
 	// belongs to the same tenant. Changing this creates a new floating IP (which

@@ -11,9 +11,6 @@ PROVIDER        := pulumi-resource-${PACK}
 VERSION         := $(shell scripts/get-version)
 PYPI_VERSION    := $(shell scripts/get-py-version)
 
-GOMETALINTERBIN=gometalinter
-GOMETALINTER=${GOMETALINTERBIN} --config=Gometalinter.json
-
 TESTPARALLELISM := 10
 
 # NOTE: Since the plugin is published using the nodejs style semver version
@@ -46,7 +43,7 @@ build::
 		dotnet build
 
 lint::
-	$(GOMETALINTER) ./cmd/... resources.go | sort ; exit "$${PIPESTATUS[0]}"
+	golangci-lint run
 
 install::
 	GOBIN=$(PULUMI_BIN) go install -ldflags "-X github.com/pulumi/pulumi-openstack/pkg/version.Version=${VERSION}" ${PROJECT}/cmd/${PROVIDER}
@@ -63,7 +60,7 @@ install::
 		dotnet publish
 
 test_all::
-	PATH=$(PULUMI_BIN):$(PATH) go test -v -cover -timeout 1h -parallel ${TESTPARALLELISM} ./examples
+	PATH=$(PULUMI_BIN):$(PATH) go test -v -count=1 -cover -timeout 1h -parallel ${TESTPARALLELISM} ./examples
 
 .PHONY: publish_tgz
 publish_tgz:
@@ -73,7 +70,7 @@ publish_tgz:
 .PHONY: publish_packages
 publish_packages:
 	$(call STEP_MESSAGE)
-	./scripts/publish_packages.sh
+	$$(go env GOPATH)/src/github.com/pulumi/scripts/ci/publish-tfgen-package .
 
 .PHONY: check_clean_worktree
 check_clean_worktree:

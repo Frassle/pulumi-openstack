@@ -29,17 +29,19 @@ const (
 	// packages:
 	openstackPkg = "openstack"
 	// modules:
-	blockstorageMod = "blockstorage"  // Block Storage
-	computeMod      = "compute"       // Compute
-	databaseMod     = "database"      // Database
-	dnsMod          = "dns"           // DNS
-	identityMod     = "identity"      // Identity
-	imagesMod       = "images"        // Images
-	networkingMod   = "networking"    // Networking
-	lbMod           = "loadbalancer"  // Load Balancer
-	firewallMod     = "firewall"      // Firewall
-	osMod           = "objectstorage" // Object Storage
-	vpnaasMod       = "vpnaas"        // VPNaaS
+	blockstorageMod     = "blockstorage"     // Block Storage
+	computeMod          = "compute"          // Compute
+	containerinfraMod   = "containerinfra"   // Container Infrastructure
+	databaseMod         = "database"         // Database
+	dnsMod              = "dns"              // DNS
+	identityMod         = "identity"         // Identity
+	imagesMod           = "images"           // Images
+	networkingMod       = "networking"       // Networking
+	lbMod               = "loadbalancer"     // Load Balancer
+	firewallMod         = "firewall"         // Firewall
+	osMod               = "objectstorage"    // Object Storage
+	sharedfilesystemMod = "sharedfilesystem" // Shared FileSystem
+	vpnaasMod           = "vpnaas"           // VPNaaS
 )
 
 // openstackMember manufactures a type token for the OpenStack package and the given module and type.
@@ -52,23 +54,18 @@ func openstackType(mod string, typ string) tokens.Type {
 	return tokens.Type(openstackMember(mod, typ))
 }
 
-// openstackDataSource manufactures a standard resource token given a module and resource name.  It automatically uses the OpenStack
-// package and names the file by simply lower casing the data source's first character.
+// openstackDataSource manufactures a standard resource token given a module and resource name.  It automatically uses
+// the OpenStack package and names the file by simply lower casing the data source's first character.
 func openstackDataSource(mod string, res string) tokens.ModuleMember {
 	fn := string(unicode.ToLower(rune(res[0]))) + res[1:]
 	return openstackMember(mod+"/"+fn, res)
 }
 
-// openstackResource manufactures a standard resource token given a module and resource name.  It automatically uses the OpenStack
-// package and names the file by simply lower casing the resource's first character.
+// openstackResource manufactures a standard resource token given a module and resource name.  It automatically uses
+// the OpenStack package and names the file by simply lower casing the resource's first character.
 func openstackResource(mod string, res string) tokens.Type {
 	fn := string(unicode.ToLower(rune(res[0]))) + res[1:]
 	return openstackType(mod+"/"+fn, res)
-}
-
-// boolRef returns a reference to the bool argument.
-func boolRef(b bool) *bool {
-	return &b
 }
 
 // Provider returns additional overlaid schema and metadata associated with the openstack package.
@@ -81,30 +78,30 @@ func Provider() tfbridge.ProviderInfo {
 		Description: "A Pulumi package for creating and managing OpenStack cloud resources.",
 		Keywords:    []string{"pulumi", "openstack"},
 		Homepage:    "https://pulumi.io",
-		License:     "Apache 2.0",
+		License:     "Apache-2.0",
 		Repository:  "https://github.com/pulumi/pulumi-openstack",
 		Config: map[string]*tfbridge.SchemaInfo{
-			"auth_url": &tfbridge.SchemaInfo{
+			"auth_url": {
 				Default: &tfbridge.DefaultInfo{
 					EnvVars: []string{"OS_AUTH_URL"},
 				},
 			},
-			"region": &tfbridge.SchemaInfo{
+			"region": {
 				Default: &tfbridge.DefaultInfo{
 					EnvVars: []string{"OS_REGION_NAME"},
 				},
 			},
-			"user_name": &tfbridge.SchemaInfo{
+			"user_name": {
 				Default: &tfbridge.DefaultInfo{
 					EnvVars: []string{"OS_USERNAME"},
 				},
 			},
-			"user_id": &tfbridge.SchemaInfo{
+			"user_id": {
 				Default: &tfbridge.DefaultInfo{
 					EnvVars: []string{"OS_USER_ID"},
 				},
 			},
-			"tenant_id": &tfbridge.SchemaInfo{
+			"tenant_id": {
 				Default: &tfbridge.DefaultInfo{
 					EnvVars: []string{
 						"OS_TENANT_ID",
@@ -112,7 +109,7 @@ func Provider() tfbridge.ProviderInfo {
 					},
 				},
 			},
-			"tenant_name": &tfbridge.SchemaInfo{
+			"tenant_name": {
 				Default: &tfbridge.DefaultInfo{
 					EnvVars: []string{
 						"OS_TENANT_NAME",
@@ -120,12 +117,12 @@ func Provider() tfbridge.ProviderInfo {
 					},
 				},
 			},
-			"password": &tfbridge.SchemaInfo{
+			"password": {
 				Default: &tfbridge.DefaultInfo{
 					EnvVars: []string{"OS_PASSWORD"},
 				},
 			},
-			"token": &tfbridge.SchemaInfo{
+			"token": {
 				Default: &tfbridge.DefaultInfo{
 					EnvVars: []string{
 						"OS_TOKEN",
@@ -133,78 +130,78 @@ func Provider() tfbridge.ProviderInfo {
 					},
 				},
 			},
-			"user_domain_name": &tfbridge.SchemaInfo{
+			"user_domain_name": {
 				Default: &tfbridge.DefaultInfo{
 					EnvVars: []string{"OS_USER_DOMAIN_NAME"},
 				},
 			},
-			"user_domain_id": &tfbridge.SchemaInfo{
+			"user_domain_id": {
 				Default: &tfbridge.DefaultInfo{
 					EnvVars: []string{"OS_USER_DOMAIN_ID"},
 				},
 			},
-			"project_domain_name": &tfbridge.SchemaInfo{
+			"project_domain_name": {
 				Default: &tfbridge.DefaultInfo{
 					EnvVars: []string{"OS_PROJECT_DOMAIN_NAME"},
 				},
 			},
-			"project_domain_id": &tfbridge.SchemaInfo{
+			"project_domain_id": {
 				Default: &tfbridge.DefaultInfo{
 					EnvVars: []string{"OS_PROJECT_DOMAIN_ID"},
 				},
 			},
-			"domain_id": &tfbridge.SchemaInfo{
+			"domain_id": {
 				Default: &tfbridge.DefaultInfo{
 					EnvVars: []string{"OS_DOMAIN_ID"},
 				},
 			},
-			"domain_name": &tfbridge.SchemaInfo{
+			"domain_name": {
 				Default: &tfbridge.DefaultInfo{
 					EnvVars: []string{"OS_DOMAIN_NAME"},
 				},
 			},
-			"default_domain": &tfbridge.SchemaInfo{
+			"default_domain": {
 				Default: &tfbridge.DefaultInfo{
 					Value:   "default",
 					EnvVars: []string{"OS_DEFAULT_DOMAIN"},
 				},
 			},
-			"insecure": &tfbridge.SchemaInfo{
+			"insecure": {
 				Default: &tfbridge.DefaultInfo{
 					EnvVars: []string{"OS_INSECURE"},
 				},
 			},
-			"endpoint_type": &tfbridge.SchemaInfo{
+			"endpoint_type": {
 				Default: &tfbridge.DefaultInfo{
 					EnvVars: []string{"OS_ENDPOINT_TYPE"},
 				},
 			},
-			"cacert_file": &tfbridge.SchemaInfo{
+			"cacert_file": {
 				Default: &tfbridge.DefaultInfo{
 					EnvVars: []string{"OS_CACERT"},
 				},
 			},
-			"cert": &tfbridge.SchemaInfo{
+			"cert": {
 				Default: &tfbridge.DefaultInfo{
 					EnvVars: []string{"OS_CERT"},
 				},
 			},
-			"key": &tfbridge.SchemaInfo{
+			"key": {
 				Default: &tfbridge.DefaultInfo{
 					EnvVars: []string{"OS_KEY"},
 				},
 			},
-			"swauth": &tfbridge.SchemaInfo{
+			"swauth": {
 				Default: &tfbridge.DefaultInfo{
 					EnvVars: []string{"OS_SWAUTH"},
 				},
 			},
-			"use_octavia": &tfbridge.SchemaInfo{
+			"use_octavia": {
 				Default: &tfbridge.DefaultInfo{
 					EnvVars: []string{"OS_USE_OCTAVIA"},
 				},
 			},
-			"cloud": &tfbridge.SchemaInfo{
+			"cloud": {
 				Default: &tfbridge.DefaultInfo{
 					EnvVars: []string{"OS_CLOUD"},
 				},
@@ -220,13 +217,19 @@ func Provider() tfbridge.ProviderInfo {
 
 			// Compute
 			"openstack_compute_flavor_v2":               {Tok: openstackResource(computeMod, "Flavor")},
+			"openstack_compute_flavor_access_v2":        {Tok: openstackResource(computeMod, "FlavorAccess")},
 			"openstack_compute_floatingip_v2":           {Tok: openstackResource(computeMod, "FloatingIp")},
 			"openstack_compute_floatingip_associate_v2": {Tok: openstackResource(computeMod, "FloatingIpAssociate")},
 			"openstack_compute_instance_v2":             {Tok: openstackResource(computeMod, "Instance")},
+			"openstack_compute_interface_attach_v2":     {Tok: openstackResource(computeMod, "InterfaceAttach")},
 			"openstack_compute_keypair_v2":              {Tok: openstackResource(computeMod, "Keypair")},
 			"openstack_compute_secgroup_v2":             {Tok: openstackResource(computeMod, "SecGroup")},
 			"openstack_compute_servergroup_v2":          {Tok: openstackResource(computeMod, "ServerGroup")},
 			"openstack_compute_volume_attach_v2":        {Tok: openstackResource(computeMod, "VolumeAttach")},
+
+			// Container Infrastructure
+			"openstack_containerinfra_cluster_v1":         {Tok: openstackResource(containerinfraMod, "Cluster")},
+			"openstack_containerinfra_clustertemplate_v1": {Tok: openstackResource(containerinfraMod, "ClusterTemplate")},
 
 			// Database
 			"openstack_db_instance_v1":      {Tok: openstackResource(databaseMod, "Instance")},
@@ -260,6 +263,7 @@ func Provider() tfbridge.ProviderInfo {
 			"openstack_networking_subnetpool_v2":           {Tok: openstackResource(networkingMod, "SubnetPool")},
 			"openstack_networking_secgroup_v2":             {Tok: openstackResource(networkingMod, "SecGroup")},
 			"openstack_networking_secgroup_rule_v2":        {Tok: openstackResource(networkingMod, "SecGroupRule")},
+			"openstack_networking_trunk_v2":                {Tok: openstackResource(networkingMod, "Trunk")},
 
 			// Load Balancer
 			"openstack_lb_member_v1":       {Tok: openstackResource(lbMod, "MemberV1")},
@@ -280,6 +284,11 @@ func Provider() tfbridge.ProviderInfo {
 			// Object Storage
 			"openstack_objectstorage_container_v1": {Tok: openstackResource(osMod, "Container")},
 			"openstack_objectstorage_object_v1":    {Tok: openstackResource(osMod, "ContainerObject")},
+			"openstack_objectstorage_tempurl_v1":   {Tok: openstackResource(osMod, "TempUrl")},
+
+			// Shared Filesystem
+			"openstack_sharedfilesystem_securityservice_v2": {Tok: openstackResource(sharedfilesystemMod, "SecurityService")},
+			"openstack_sharedfilesystem_sharenetwork_v2":    {Tok: openstackResource(sharedfilesystemMod, "ShareNetwork")},
 
 			// VPNaaS
 			"openstack_vpnaas_ipsec_policy_v2":    {Tok: openstackResource(vpnaasMod, "IpSecPolicy")},
@@ -289,9 +298,17 @@ func Provider() tfbridge.ProviderInfo {
 			"openstack_vpnaas_site_connection_v2": {Tok: openstackResource(vpnaasMod, "SiteConnection")},
 		},
 		DataSources: map[string]*tfbridge.DataSourceInfo{
+			// Block Storage
+			"openstack_blockstorage_snapshot_v2": {Tok: openstackDataSource(blockstorageMod, "getSnapshotV2")},
+			"openstack_blockstorage_snapshot_v3": {Tok: openstackDataSource(blockstorageMod, "getSnapshotV3")},
+
 			// Compute
 			"openstack_compute_flavor_v2":  {Tok: openstackDataSource(computeMod, "getFlavor")},
 			"openstack_compute_keypair_v2": {Tok: openstackDataSource(computeMod, "getKeypair")},
+
+			// Container Infrastructure
+			"openstack_containerinfra_cluster_v1":         {Tok: openstackDataSource(containerinfraMod, "getCluster")},
+			"openstack_containerinfra_clustertemplate_v1": {Tok: openstackDataSource(containerinfraMod, "getClusterTemplate")},
 
 			// DNS
 			"openstack_dns_zone_v2": {Tok: openstackDataSource(dnsMod, "getDnsZone")},
@@ -309,6 +326,7 @@ func Provider() tfbridge.ProviderInfo {
 
 			// Networking
 			"openstack_networking_network_v2":    {Tok: openstackDataSource(networkingMod, "getNetwork")},
+			"openstack_networking_router_v2":     {Tok: openstackDataSource(networkingMod, "getRouter")},
 			"openstack_networking_secgroup_v2":   {Tok: openstackDataSource(networkingMod, "getSecGroup")},
 			"openstack_networking_subnet_v2":     {Tok: openstackDataSource(networkingMod, "getSubnet")},
 			"openstack_networking_subnetpool_v2": {Tok: openstackDataSource(networkingMod, "getSubnetPool")},
@@ -322,7 +340,7 @@ func Provider() tfbridge.ProviderInfo {
 				"@types/node": "^8.0.25", // so we can access strongly typed node definitions.
 			},
 			Dependencies: map[string]string{
-				"@pulumi/pulumi": "^0.15.1",
+				"@pulumi/pulumi": "^0.16.4",
 			},
 			Overlay: &tfbridge.OverlayInfo{
 				Files:   []string{},
@@ -331,7 +349,7 @@ func Provider() tfbridge.ProviderInfo {
 		},
 		Python: &tfbridge.PythonInfo{
 			Requires: map[string]string{
-				"pulumi": ">=0.15.1,<0.16.0",
+				"pulumi": ">=0.16.4,<0.17.0",
 			},
 		},
 	}

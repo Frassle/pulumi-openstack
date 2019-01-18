@@ -23,6 +23,7 @@ func NewSubnet(ctx *pulumi.Context,
 	if args == nil {
 		inputs["allocationPools"] = nil
 		inputs["cidr"] = nil
+		inputs["description"] = nil
 		inputs["dnsNameservers"] = nil
 		inputs["enableDhcp"] = nil
 		inputs["gatewayIp"] = nil
@@ -35,11 +36,13 @@ func NewSubnet(ctx *pulumi.Context,
 		inputs["noGateway"] = nil
 		inputs["region"] = nil
 		inputs["subnetpoolId"] = nil
+		inputs["tags"] = nil
 		inputs["tenantId"] = nil
 		inputs["valueSpecs"] = nil
 	} else {
 		inputs["allocationPools"] = args.AllocationPools
 		inputs["cidr"] = args.Cidr
+		inputs["description"] = args.Description
 		inputs["dnsNameservers"] = args.DnsNameservers
 		inputs["enableDhcp"] = args.EnableDhcp
 		inputs["gatewayIp"] = args.GatewayIp
@@ -52,6 +55,7 @@ func NewSubnet(ctx *pulumi.Context,
 		inputs["noGateway"] = args.NoGateway
 		inputs["region"] = args.Region
 		inputs["subnetpoolId"] = args.SubnetpoolId
+		inputs["tags"] = args.Tags
 		inputs["tenantId"] = args.TenantId
 		inputs["valueSpecs"] = args.ValueSpecs
 	}
@@ -70,6 +74,7 @@ func GetSubnet(ctx *pulumi.Context,
 	if state != nil {
 		inputs["allocationPools"] = state.AllocationPools
 		inputs["cidr"] = state.Cidr
+		inputs["description"] = state.Description
 		inputs["dnsNameservers"] = state.DnsNameservers
 		inputs["enableDhcp"] = state.EnableDhcp
 		inputs["gatewayIp"] = state.GatewayIp
@@ -82,6 +87,7 @@ func GetSubnet(ctx *pulumi.Context,
 		inputs["noGateway"] = state.NoGateway
 		inputs["region"] = state.Region
 		inputs["subnetpoolId"] = state.SubnetpoolId
+		inputs["tags"] = state.Tags
 		inputs["tenantId"] = state.TenantId
 		inputs["valueSpecs"] = state.ValueSpecs
 	}
@@ -94,12 +100,12 @@ func GetSubnet(ctx *pulumi.Context,
 
 // URN is this resource's unique name assigned by Pulumi.
 func (r *Subnet) URN() *pulumi.URNOutput {
-	return r.s.URN
+	return r.s.URN()
 }
 
 // ID is this resource's unique identifier assigned by its provider.
 func (r *Subnet) ID() *pulumi.IDOutput {
-	return r.s.ID
+	return r.s.ID()
 }
 
 // An array of sub-ranges of CIDR available for
@@ -114,6 +120,12 @@ func (r *Subnet) AllocationPools() *pulumi.ArrayOutput {
 // subnet pool.
 func (r *Subnet) Cidr() *pulumi.StringOutput {
 	return (*pulumi.StringOutput)(r.s.State["cidr"])
+}
+
+// Human-readable description of the subnet. Changing this
+// updates the name of the existing subnet.
+func (r *Subnet) Description() *pulumi.StringOutput {
+	return (*pulumi.StringOutput)(r.s.State["description"])
 }
 
 // An array of DNS name server names used by hosts
@@ -195,6 +207,11 @@ func (r *Subnet) SubnetpoolId() *pulumi.StringOutput {
 	return (*pulumi.StringOutput)(r.s.State["subnetpoolId"])
 }
 
+// A set of string tags for the subnet.
+func (r *Subnet) Tags() *pulumi.ArrayOutput {
+	return (*pulumi.ArrayOutput)(r.s.State["tags"])
+}
+
 // The owner of the subnet. Required if admin wants to
 // create a subnet for another tenant. Changing this creates a new subnet.
 func (r *Subnet) TenantId() *pulumi.StringOutput {
@@ -216,6 +233,9 @@ type SubnetState struct {
 	// version. You can omit this option if you are creating a subnet from a
 	// subnet pool.
 	Cidr interface{}
+	// Human-readable description of the subnet. Changing this
+	// updates the name of the existing subnet.
+	Description interface{}
 	// An array of DNS name server names used by hosts
 	// in this subnet. Changing this updates the DNS name servers for the existing
 	// subnet.
@@ -259,6 +279,8 @@ type SubnetState struct {
 	Region interface{}
 	// The ID of the subnetpool associated with the subnet.
 	SubnetpoolId interface{}
+	// A set of string tags for the subnet.
+	Tags interface{}
 	// The owner of the subnet. Required if admin wants to
 	// create a subnet for another tenant. Changing this creates a new subnet.
 	TenantId interface{}
@@ -276,6 +298,9 @@ type SubnetArgs struct {
 	// version. You can omit this option if you are creating a subnet from a
 	// subnet pool.
 	Cidr interface{}
+	// Human-readable description of the subnet. Changing this
+	// updates the name of the existing subnet.
+	Description interface{}
 	// An array of DNS name server names used by hosts
 	// in this subnet. Changing this updates the DNS name servers for the existing
 	// subnet.
@@ -319,6 +344,8 @@ type SubnetArgs struct {
 	Region interface{}
 	// The ID of the subnetpool associated with the subnet.
 	SubnetpoolId interface{}
+	// A set of string tags for the subnet.
+	Tags interface{}
 	// The owner of the subnet. Required if admin wants to
 	// create a subnet for another tenant. Changing this creates a new subnet.
 	TenantId interface{}

@@ -18,10 +18,14 @@ export class SecGroupRule extends pulumi.CustomResource {
      * @param id The _unique_ provider ID of the resource to lookup.
      * @param state Any extra arguments used during the lookup.
      */
-    public static get(name: string, id: pulumi.Input<pulumi.ID>, state?: SecGroupRuleState): SecGroupRule {
-        return new SecGroupRule(name, <any>state, { id });
+    public static get(name: string, id: pulumi.Input<pulumi.ID>, state?: SecGroupRuleState, opts?: pulumi.CustomResourceOptions): SecGroupRule {
+        return new SecGroupRule(name, <any>state, { ...opts, id: id });
     }
 
+    /**
+     * A description of the rule. Changing this creates a new security group rule.
+     */
+    public readonly description: pulumi.Output<string | undefined>;
     /**
      * The direction of the rule, valid values are __ingress__
      * or __egress__. Changing this creates a new security group rule.
@@ -112,6 +116,7 @@ export class SecGroupRule extends pulumi.CustomResource {
         let inputs: pulumi.Inputs = {};
         if (opts && opts.id) {
             const state: SecGroupRuleState = argsOrState as SecGroupRuleState | undefined;
+            inputs["description"] = state ? state.description : undefined;
             inputs["direction"] = state ? state.direction : undefined;
             inputs["ethertype"] = state ? state.ethertype : undefined;
             inputs["portRangeMax"] = state ? state.portRangeMax : undefined;
@@ -133,6 +138,7 @@ export class SecGroupRule extends pulumi.CustomResource {
             if (!args || args.securityGroupId === undefined) {
                 throw new Error("Missing required property 'securityGroupId'");
             }
+            inputs["description"] = args ? args.description : undefined;
             inputs["direction"] = args ? args.direction : undefined;
             inputs["ethertype"] = args ? args.ethertype : undefined;
             inputs["portRangeMax"] = args ? args.portRangeMax : undefined;
@@ -152,6 +158,10 @@ export class SecGroupRule extends pulumi.CustomResource {
  * Input properties used for looking up and filtering SecGroupRule resources.
  */
 export interface SecGroupRuleState {
+    /**
+     * A description of the rule. Changing this creates a new security group rule.
+     */
+    readonly description?: pulumi.Input<string>;
     /**
      * The direction of the rule, valid values are __ingress__
      * or __egress__. Changing this creates a new security group rule.
@@ -235,6 +245,10 @@ export interface SecGroupRuleState {
  * The set of arguments for constructing a SecGroupRule resource.
  */
 export interface SecGroupRuleArgs {
+    /**
+     * A description of the rule. Changing this creates a new security group rule.
+     */
+    readonly description?: pulumi.Input<string>;
     /**
      * The direction of the rule, valid values are __ingress__
      * or __egress__. Changing this creates a new security group rule.

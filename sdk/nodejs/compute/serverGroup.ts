@@ -16,8 +16,8 @@ export class ServerGroup extends pulumi.CustomResource {
      * @param id The _unique_ provider ID of the resource to lookup.
      * @param state Any extra arguments used during the lookup.
      */
-    public static get(name: string, id: pulumi.Input<pulumi.ID>, state?: ServerGroupState): ServerGroup {
-        return new ServerGroup(name, <any>state, { id });
+    public static get(name: string, id: pulumi.Input<pulumi.ID>, state?: ServerGroupState, opts?: pulumi.CustomResourceOptions): ServerGroup {
+        return new ServerGroup(name, <any>state, { ...opts, id: id });
     }
 
     /**
@@ -30,10 +30,9 @@ export class ServerGroup extends pulumi.CustomResource {
      */
     public readonly name: pulumi.Output<string>;
     /**
-     * The set of policies for the server group. Only two
-     * two policies are available right now, and both are mutually exclusive. See
-     * the Policies section for more information. Changing this creates a new
-     * server group.
+     * The set of policies for the server group. All policies
+     * are mutually exclusive. See the Policies section for more information.
+     * Changing this creates a new server group.
      */
     public readonly policies: pulumi.Output<string[] | undefined>;
     /**
@@ -90,10 +89,9 @@ export interface ServerGroupState {
      */
     readonly name?: pulumi.Input<string>;
     /**
-     * The set of policies for the server group. Only two
-     * two policies are available right now, and both are mutually exclusive. See
-     * the Policies section for more information. Changing this creates a new
-     * server group.
+     * The set of policies for the server group. All policies
+     * are mutually exclusive. See the Policies section for more information.
+     * Changing this creates a new server group.
      */
     readonly policies?: pulumi.Input<pulumi.Input<string>[]>;
     /**
@@ -118,10 +116,9 @@ export interface ServerGroupArgs {
      */
     readonly name?: pulumi.Input<string>;
     /**
-     * The set of policies for the server group. Only two
-     * two policies are available right now, and both are mutually exclusive. See
-     * the Policies section for more information. Changing this creates a new
-     * server group.
+     * The set of policies for the server group. All policies
+     * are mutually exclusive. See the Policies section for more information.
+     * Changing this creates a new server group.
      */
     readonly policies?: pulumi.Input<pulumi.Input<string>[]>;
     /**

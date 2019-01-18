@@ -16,8 +16,8 @@ export class Subnet extends pulumi.CustomResource {
      * @param id The _unique_ provider ID of the resource to lookup.
      * @param state Any extra arguments used during the lookup.
      */
-    public static get(name: string, id: pulumi.Input<pulumi.ID>, state?: SubnetState): Subnet {
-        return new Subnet(name, <any>state, { id });
+    public static get(name: string, id: pulumi.Input<pulumi.ID>, state?: SubnetState, opts?: pulumi.CustomResourceOptions): Subnet {
+        return new Subnet(name, <any>state, { ...opts, id: id });
     }
 
     /**
@@ -32,6 +32,11 @@ export class Subnet extends pulumi.CustomResource {
      * subnet pool.
      */
     public readonly cidr: pulumi.Output<string>;
+    /**
+     * Human-readable description of the subnet. Changing this
+     * updates the name of the existing subnet.
+     */
+    public readonly description: pulumi.Output<string | undefined>;
     /**
      * An array of DNS name server names used by hosts
      * in this subnet. Changing this updates the DNS name servers for the existing
@@ -100,6 +105,10 @@ export class Subnet extends pulumi.CustomResource {
      */
     public readonly subnetpoolId: pulumi.Output<string | undefined>;
     /**
+     * A set of string tags for the subnet.
+     */
+    public readonly tags: pulumi.Output<string[] | undefined>;
+    /**
      * The owner of the subnet. Required if admin wants to
      * create a subnet for another tenant. Changing this creates a new subnet.
      */
@@ -123,6 +132,7 @@ export class Subnet extends pulumi.CustomResource {
             const state: SubnetState = argsOrState as SubnetState | undefined;
             inputs["allocationPools"] = state ? state.allocationPools : undefined;
             inputs["cidr"] = state ? state.cidr : undefined;
+            inputs["description"] = state ? state.description : undefined;
             inputs["dnsNameservers"] = state ? state.dnsNameservers : undefined;
             inputs["enableDhcp"] = state ? state.enableDhcp : undefined;
             inputs["gatewayIp"] = state ? state.gatewayIp : undefined;
@@ -135,6 +145,7 @@ export class Subnet extends pulumi.CustomResource {
             inputs["noGateway"] = state ? state.noGateway : undefined;
             inputs["region"] = state ? state.region : undefined;
             inputs["subnetpoolId"] = state ? state.subnetpoolId : undefined;
+            inputs["tags"] = state ? state.tags : undefined;
             inputs["tenantId"] = state ? state.tenantId : undefined;
             inputs["valueSpecs"] = state ? state.valueSpecs : undefined;
         } else {
@@ -144,6 +155,7 @@ export class Subnet extends pulumi.CustomResource {
             }
             inputs["allocationPools"] = args ? args.allocationPools : undefined;
             inputs["cidr"] = args ? args.cidr : undefined;
+            inputs["description"] = args ? args.description : undefined;
             inputs["dnsNameservers"] = args ? args.dnsNameservers : undefined;
             inputs["enableDhcp"] = args ? args.enableDhcp : undefined;
             inputs["gatewayIp"] = args ? args.gatewayIp : undefined;
@@ -156,6 +168,7 @@ export class Subnet extends pulumi.CustomResource {
             inputs["noGateway"] = args ? args.noGateway : undefined;
             inputs["region"] = args ? args.region : undefined;
             inputs["subnetpoolId"] = args ? args.subnetpoolId : undefined;
+            inputs["tags"] = args ? args.tags : undefined;
             inputs["tenantId"] = args ? args.tenantId : undefined;
             inputs["valueSpecs"] = args ? args.valueSpecs : undefined;
         }
@@ -179,6 +192,11 @@ export interface SubnetState {
      * subnet pool.
      */
     readonly cidr?: pulumi.Input<string>;
+    /**
+     * Human-readable description of the subnet. Changing this
+     * updates the name of the existing subnet.
+     */
+    readonly description?: pulumi.Input<string>;
     /**
      * An array of DNS name server names used by hosts
      * in this subnet. Changing this updates the DNS name servers for the existing
@@ -247,6 +265,10 @@ export interface SubnetState {
      */
     readonly subnetpoolId?: pulumi.Input<string>;
     /**
+     * A set of string tags for the subnet.
+     */
+    readonly tags?: pulumi.Input<pulumi.Input<string>[]>;
+    /**
      * The owner of the subnet. Required if admin wants to
      * create a subnet for another tenant. Changing this creates a new subnet.
      */
@@ -273,6 +295,11 @@ export interface SubnetArgs {
      * subnet pool.
      */
     readonly cidr?: pulumi.Input<string>;
+    /**
+     * Human-readable description of the subnet. Changing this
+     * updates the name of the existing subnet.
+     */
+    readonly description?: pulumi.Input<string>;
     /**
      * An array of DNS name server names used by hosts
      * in this subnet. Changing this updates the DNS name servers for the existing
@@ -340,6 +367,10 @@ export interface SubnetArgs {
      * The ID of the subnetpool associated with the subnet.
      */
     readonly subnetpoolId?: pulumi.Input<string>;
+    /**
+     * A set of string tags for the subnet.
+     */
+    readonly tags?: pulumi.Input<pulumi.Input<string>[]>;
     /**
      * The owner of the subnet. Required if admin wants to
      * create a subnet for another tenant. Changing this creates a new subnet.

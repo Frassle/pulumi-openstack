@@ -16,8 +16,8 @@ export class Router extends pulumi.CustomResource {
      * @param id The _unique_ provider ID of the resource to lookup.
      * @param state Any extra arguments used during the lookup.
      */
-    public static get(name: string, id: pulumi.Input<pulumi.ID>, state?: RouterState): Router {
-        return new Router(name, <any>state, { id });
+    public static get(name: string, id: pulumi.Input<pulumi.ID>, state?: RouterState, opts?: pulumi.CustomResourceOptions): Router {
+        return new Router(name, <any>state, { ...opts, id: id });
     }
 
     /**
@@ -32,6 +32,10 @@ export class Router extends pulumi.CustomResource {
      * this creates a new router.
      */
     public readonly availabilityZoneHints: pulumi.Output<string[]>;
+    /**
+     * Human-readable description for the router.
+     */
+    public readonly description: pulumi.Output<string | undefined>;
     /**
      * Indicates whether or not to create a
      * distributed router. The default policy setting in Neutron restricts
@@ -79,6 +83,10 @@ export class Router extends pulumi.CustomResource {
      */
     public readonly region: pulumi.Output<string>;
     /**
+     * A set of string tags for the router.
+     */
+    public readonly tags: pulumi.Output<string[] | undefined>;
+    /**
      * The owner of the floating IP. Required if admin wants
      * to create a router for another tenant. Changing this creates a new router.
      */
@@ -107,6 +115,7 @@ export class Router extends pulumi.CustomResource {
             const state: RouterState = argsOrState as RouterState | undefined;
             inputs["adminStateUp"] = state ? state.adminStateUp : undefined;
             inputs["availabilityZoneHints"] = state ? state.availabilityZoneHints : undefined;
+            inputs["description"] = state ? state.description : undefined;
             inputs["distributed"] = state ? state.distributed : undefined;
             inputs["enableSnat"] = state ? state.enableSnat : undefined;
             inputs["externalFixedIps"] = state ? state.externalFixedIps : undefined;
@@ -114,6 +123,7 @@ export class Router extends pulumi.CustomResource {
             inputs["externalNetworkId"] = state ? state.externalNetworkId : undefined;
             inputs["name"] = state ? state.name : undefined;
             inputs["region"] = state ? state.region : undefined;
+            inputs["tags"] = state ? state.tags : undefined;
             inputs["tenantId"] = state ? state.tenantId : undefined;
             inputs["valueSpecs"] = state ? state.valueSpecs : undefined;
             inputs["vendorOptions"] = state ? state.vendorOptions : undefined;
@@ -121,6 +131,7 @@ export class Router extends pulumi.CustomResource {
             const args = argsOrState as RouterArgs | undefined;
             inputs["adminStateUp"] = args ? args.adminStateUp : undefined;
             inputs["availabilityZoneHints"] = args ? args.availabilityZoneHints : undefined;
+            inputs["description"] = args ? args.description : undefined;
             inputs["distributed"] = args ? args.distributed : undefined;
             inputs["enableSnat"] = args ? args.enableSnat : undefined;
             inputs["externalFixedIps"] = args ? args.externalFixedIps : undefined;
@@ -128,6 +139,7 @@ export class Router extends pulumi.CustomResource {
             inputs["externalNetworkId"] = args ? args.externalNetworkId : undefined;
             inputs["name"] = args ? args.name : undefined;
             inputs["region"] = args ? args.region : undefined;
+            inputs["tags"] = args ? args.tags : undefined;
             inputs["tenantId"] = args ? args.tenantId : undefined;
             inputs["valueSpecs"] = args ? args.valueSpecs : undefined;
             inputs["vendorOptions"] = args ? args.vendorOptions : undefined;
@@ -152,6 +164,10 @@ export interface RouterState {
      * this creates a new router.
      */
     readonly availabilityZoneHints?: pulumi.Input<pulumi.Input<string>[]>;
+    /**
+     * Human-readable description for the router.
+     */
+    readonly description?: pulumi.Input<string>;
     /**
      * Indicates whether or not to create a
      * distributed router. The default policy setting in Neutron restricts
@@ -198,6 +214,10 @@ export interface RouterState {
      * router.
      */
     readonly region?: pulumi.Input<string>;
+    /**
+     * A set of string tags for the router.
+     */
+    readonly tags?: pulumi.Input<pulumi.Input<string>[]>;
     /**
      * The owner of the floating IP. Required if admin wants
      * to create a router for another tenant. Changing this creates a new router.
@@ -231,6 +251,10 @@ export interface RouterArgs {
      */
     readonly availabilityZoneHints?: pulumi.Input<pulumi.Input<string>[]>;
     /**
+     * Human-readable description for the router.
+     */
+    readonly description?: pulumi.Input<string>;
+    /**
      * Indicates whether or not to create a
      * distributed router. The default policy setting in Neutron restricts
      * usage of this property to administrative users only.
@@ -276,6 +300,10 @@ export interface RouterArgs {
      * router.
      */
     readonly region?: pulumi.Input<string>;
+    /**
+     * A set of string tags for the router.
+     */
+    readonly tags?: pulumi.Input<pulumi.Input<string>[]>;
     /**
      * The owner of the floating IP. Required if admin wants
      * to create a router for another tenant. Changing this creates a new router.

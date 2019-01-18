@@ -16,8 +16,8 @@ export class Image extends pulumi.CustomResource {
      * @param id The _unique_ provider ID of the resource to lookup.
      * @param state Any extra arguments used during the lookup.
      */
-    public static get(name: string, id: pulumi.Input<pulumi.ID>, state?: ImageState): Image {
-        return new Image(name, <any>state, { id });
+    public static get(name: string, id: pulumi.Input<pulumi.ID>, state?: ImageState, opts?: pulumi.CustomResourceOptions): Image {
+        return new Image(name, <any>state, { ...opts, id: id });
     }
 
     /**
@@ -89,7 +89,8 @@ export class Image extends pulumi.CustomResource {
     public /*out*/ readonly owner: pulumi.Output<string>;
     /**
      * A map of key/value pairs to set freeform
-     * information about an image.
+     * information about an image. See the "Notes" section for further
+     * information about properties.
      */
     public readonly properties: pulumi.Output<{[key: string]: any}>;
     /**
@@ -283,7 +284,8 @@ export interface ImageState {
     readonly owner?: pulumi.Input<string>;
     /**
      * A map of key/value pairs to set freeform
-     * information about an image.
+     * information about an image. See the "Notes" section for further
+     * information about properties.
      */
     readonly properties?: pulumi.Input<{[key: string]: any}>;
     /**
@@ -383,7 +385,8 @@ export interface ImageArgs {
     readonly name?: pulumi.Input<string>;
     /**
      * A map of key/value pairs to set freeform
-     * information about an image.
+     * information about an image. See the "Notes" section for further
+     * information about properties.
      */
     readonly properties?: pulumi.Input<{[key: string]: any}>;
     /**

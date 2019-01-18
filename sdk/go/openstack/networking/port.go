@@ -23,29 +23,37 @@ func NewPort(ctx *pulumi.Context,
 	if args == nil {
 		inputs["adminStateUp"] = nil
 		inputs["allowedAddressPairs"] = nil
+		inputs["description"] = nil
 		inputs["deviceId"] = nil
 		inputs["deviceOwner"] = nil
+		inputs["extraDhcpOptions"] = nil
 		inputs["fixedIps"] = nil
 		inputs["macAddress"] = nil
 		inputs["name"] = nil
 		inputs["networkId"] = nil
+		inputs["noFixedIp"] = nil
 		inputs["noSecurityGroups"] = nil
 		inputs["region"] = nil
 		inputs["securityGroupIds"] = nil
+		inputs["tags"] = nil
 		inputs["tenantId"] = nil
 		inputs["valueSpecs"] = nil
 	} else {
 		inputs["adminStateUp"] = args.AdminStateUp
 		inputs["allowedAddressPairs"] = args.AllowedAddressPairs
+		inputs["description"] = args.Description
 		inputs["deviceId"] = args.DeviceId
 		inputs["deviceOwner"] = args.DeviceOwner
+		inputs["extraDhcpOptions"] = args.ExtraDhcpOptions
 		inputs["fixedIps"] = args.FixedIps
 		inputs["macAddress"] = args.MacAddress
 		inputs["name"] = args.Name
 		inputs["networkId"] = args.NetworkId
+		inputs["noFixedIp"] = args.NoFixedIp
 		inputs["noSecurityGroups"] = args.NoSecurityGroups
 		inputs["region"] = args.Region
 		inputs["securityGroupIds"] = args.SecurityGroupIds
+		inputs["tags"] = args.Tags
 		inputs["tenantId"] = args.TenantId
 		inputs["valueSpecs"] = args.ValueSpecs
 	}
@@ -68,15 +76,19 @@ func GetPort(ctx *pulumi.Context,
 		inputs["allFixedIps"] = state.AllFixedIps
 		inputs["allSecurityGroupIds"] = state.AllSecurityGroupIds
 		inputs["allowedAddressPairs"] = state.AllowedAddressPairs
+		inputs["description"] = state.Description
 		inputs["deviceId"] = state.DeviceId
 		inputs["deviceOwner"] = state.DeviceOwner
+		inputs["extraDhcpOptions"] = state.ExtraDhcpOptions
 		inputs["fixedIps"] = state.FixedIps
 		inputs["macAddress"] = state.MacAddress
 		inputs["name"] = state.Name
 		inputs["networkId"] = state.NetworkId
+		inputs["noFixedIp"] = state.NoFixedIp
 		inputs["noSecurityGroups"] = state.NoSecurityGroups
 		inputs["region"] = state.Region
 		inputs["securityGroupIds"] = state.SecurityGroupIds
+		inputs["tags"] = state.Tags
 		inputs["tenantId"] = state.TenantId
 		inputs["valueSpecs"] = state.ValueSpecs
 	}
@@ -89,12 +101,12 @@ func GetPort(ctx *pulumi.Context,
 
 // URN is this resource's unique name assigned by Pulumi.
 func (r *Port) URN() *pulumi.URNOutput {
-	return r.s.URN
+	return r.s.URN()
 }
 
 // ID is this resource's unique identifier assigned by its provider.
 func (r *Port) ID() *pulumi.IDOutput {
-	return r.s.ID
+	return r.s.ID()
 }
 
 // Administrative up/down status for the port
@@ -123,6 +135,12 @@ func (r *Port) AllowedAddressPairs() *pulumi.ArrayOutput {
 	return (*pulumi.ArrayOutput)(r.s.State["allowedAddressPairs"])
 }
 
+// Human-readable description of the floating IP. Changing
+// this updates the `description` of an existing port.
+func (r *Port) Description() *pulumi.StringOutput {
+	return (*pulumi.StringOutput)(r.s.State["description"])
+}
+
 // The ID of the device attached to the port. Changing this
 // creates a new port.
 func (r *Port) DeviceId() *pulumi.StringOutput {
@@ -135,8 +153,15 @@ func (r *Port) DeviceOwner() *pulumi.StringOutput {
 	return (*pulumi.StringOutput)(r.s.State["deviceOwner"])
 }
 
-// An array of desired IPs for this port. The structure is
-// described below.
+// An extra DHCP option that needs to be configured
+// on the port. The structure is described below. Can be specified multiple
+// times.
+func (r *Port) ExtraDhcpOptions() *pulumi.ArrayOutput {
+	return (*pulumi.ArrayOutput)(r.s.State["extraDhcpOptions"])
+}
+
+// An array of desired IPs for
+// this port. The structure is described below.
 func (r *Port) FixedIps() *pulumi.ArrayOutput {
 	return (*pulumi.ArrayOutput)(r.s.State["fixedIps"])
 }
@@ -157,6 +182,13 @@ func (r *Port) Name() *pulumi.StringOutput {
 // this creates a new port.
 func (r *Port) NetworkId() *pulumi.StringOutput {
 	return (*pulumi.StringOutput)(r.s.State["networkId"])
+}
+
+// Create a port with no fixed
+// IP address. This will also remove any fixed IPs previously set on a port. `true`
+// is the only valid value for this argument.
+func (r *Port) NoFixedIp() *pulumi.BoolOutput {
+	return (*pulumi.BoolOutput)(r.s.State["noFixedIp"])
 }
 
 // If set to
@@ -182,6 +214,11 @@ func (r *Port) Region() *pulumi.StringOutput {
 // the Compute Instance).
 func (r *Port) SecurityGroupIds() *pulumi.ArrayOutput {
 	return (*pulumi.ArrayOutput)(r.s.State["securityGroupIds"])
+}
+
+// See Argument Reference above.
+func (r *Port) Tags() *pulumi.ArrayOutput {
+	return (*pulumi.ArrayOutput)(r.s.State["tags"])
 }
 
 // The owner of the Port. Required if admin wants
@@ -211,14 +248,21 @@ type PortState struct {
 	// addresses that can be active on this port. The structure is described
 	// below.
 	AllowedAddressPairs interface{}
+	// Human-readable description of the floating IP. Changing
+	// this updates the `description` of an existing port.
+	Description interface{}
 	// The ID of the device attached to the port. Changing this
 	// creates a new port.
 	DeviceId interface{}
 	// The device owner of the Port. Changing this creates
 	// a new port.
 	DeviceOwner interface{}
-	// An array of desired IPs for this port. The structure is
-	// described below.
+	// An extra DHCP option that needs to be configured
+	// on the port. The structure is described below. Can be specified multiple
+	// times.
+	ExtraDhcpOptions interface{}
+	// An array of desired IPs for
+	// this port. The structure is described below.
 	FixedIps interface{}
 	// Specify a specific MAC address for the port. Changing
 	// this creates a new port.
@@ -229,6 +273,10 @@ type PortState struct {
 	// The ID of the network to attach the port to. Changing
 	// this creates a new port.
 	NetworkId interface{}
+	// Create a port with no fixed
+	// IP address. This will also remove any fixed IPs previously set on a port. `true`
+	// is the only valid value for this argument.
+	NoFixedIp interface{}
 	// If set to
 	// `true`, then no security groups are applied to the port. If set to `false` and
 	// no `security_group_ids` are specified, then the Port will yield to the default
@@ -245,6 +293,8 @@ type PortState struct {
 	// specified by ID and not name (as opposed to how they are configured with
 	// the Compute Instance).
 	SecurityGroupIds interface{}
+	// See Argument Reference above.
+	Tags interface{}
 	// The owner of the Port. Required if admin wants
 	// to create a port for another tenant. Changing this creates a new port.
 	TenantId interface{}
@@ -262,14 +312,21 @@ type PortArgs struct {
 	// addresses that can be active on this port. The structure is described
 	// below.
 	AllowedAddressPairs interface{}
+	// Human-readable description of the floating IP. Changing
+	// this updates the `description` of an existing port.
+	Description interface{}
 	// The ID of the device attached to the port. Changing this
 	// creates a new port.
 	DeviceId interface{}
 	// The device owner of the Port. Changing this creates
 	// a new port.
 	DeviceOwner interface{}
-	// An array of desired IPs for this port. The structure is
-	// described below.
+	// An extra DHCP option that needs to be configured
+	// on the port. The structure is described below. Can be specified multiple
+	// times.
+	ExtraDhcpOptions interface{}
+	// An array of desired IPs for
+	// this port. The structure is described below.
 	FixedIps interface{}
 	// Specify a specific MAC address for the port. Changing
 	// this creates a new port.
@@ -280,6 +337,10 @@ type PortArgs struct {
 	// The ID of the network to attach the port to. Changing
 	// this creates a new port.
 	NetworkId interface{}
+	// Create a port with no fixed
+	// IP address. This will also remove any fixed IPs previously set on a port. `true`
+	// is the only valid value for this argument.
+	NoFixedIp interface{}
 	// If set to
 	// `true`, then no security groups are applied to the port. If set to `false` and
 	// no `security_group_ids` are specified, then the Port will yield to the default
@@ -296,6 +357,8 @@ type PortArgs struct {
 	// specified by ID and not name (as opposed to how they are configured with
 	// the Compute Instance).
 	SecurityGroupIds interface{}
+	// See Argument Reference above.
+	Tags interface{}
 	// The owner of the Port. Required if admin wants
 	// to create a port for another tenant. Changing this creates a new port.
 	TenantId interface{}

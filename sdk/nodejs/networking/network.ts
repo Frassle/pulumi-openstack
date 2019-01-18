@@ -16,8 +16,8 @@ export class Network extends pulumi.CustomResource {
      * @param id The _unique_ provider ID of the resource to lookup.
      * @param state Any extra arguments used during the lookup.
      */
-    public static get(name: string, id: pulumi.Input<pulumi.ID>, state?: NetworkState): Network {
-        return new Network(name, <any>state, { id });
+    public static get(name: string, id: pulumi.Input<pulumi.ID>, state?: NetworkState, opts?: pulumi.CustomResourceOptions): Network {
+        return new Network(name, <any>state, { ...opts, id: id });
     }
 
     /**
@@ -33,6 +33,11 @@ export class Network extends pulumi.CustomResource {
      * creates a new network.
      */
     public readonly availabilityZoneHints: pulumi.Output<string[]>;
+    /**
+     * Human-readable description of the network. Changing this
+     * updates the name of the existing network.
+     */
+    public readonly description: pulumi.Output<string | undefined>;
     /**
      * Specifies whether the network resource has the
      * external routing facility. Valid values are true and false. Defaults to
@@ -62,6 +67,10 @@ export class Network extends pulumi.CustomResource {
      */
     public readonly shared: pulumi.Output<string>;
     /**
+     * A set of string tags for the network. 
+     */
+    public readonly tags: pulumi.Output<string[] | undefined>;
+    /**
      * The owner of the network. Required if admin wants to
      * create a network for another tenant. Changing this creates a new network.
      */
@@ -85,22 +94,26 @@ export class Network extends pulumi.CustomResource {
             const state: NetworkState = argsOrState as NetworkState | undefined;
             inputs["adminStateUp"] = state ? state.adminStateUp : undefined;
             inputs["availabilityZoneHints"] = state ? state.availabilityZoneHints : undefined;
+            inputs["description"] = state ? state.description : undefined;
             inputs["external"] = state ? state.external : undefined;
             inputs["name"] = state ? state.name : undefined;
             inputs["region"] = state ? state.region : undefined;
             inputs["segments"] = state ? state.segments : undefined;
             inputs["shared"] = state ? state.shared : undefined;
+            inputs["tags"] = state ? state.tags : undefined;
             inputs["tenantId"] = state ? state.tenantId : undefined;
             inputs["valueSpecs"] = state ? state.valueSpecs : undefined;
         } else {
             const args = argsOrState as NetworkArgs | undefined;
             inputs["adminStateUp"] = args ? args.adminStateUp : undefined;
             inputs["availabilityZoneHints"] = args ? args.availabilityZoneHints : undefined;
+            inputs["description"] = args ? args.description : undefined;
             inputs["external"] = args ? args.external : undefined;
             inputs["name"] = args ? args.name : undefined;
             inputs["region"] = args ? args.region : undefined;
             inputs["segments"] = args ? args.segments : undefined;
             inputs["shared"] = args ? args.shared : undefined;
+            inputs["tags"] = args ? args.tags : undefined;
             inputs["tenantId"] = args ? args.tenantId : undefined;
             inputs["valueSpecs"] = args ? args.valueSpecs : undefined;
         }
@@ -125,6 +138,11 @@ export interface NetworkState {
      * creates a new network.
      */
     readonly availabilityZoneHints?: pulumi.Input<pulumi.Input<string>[]>;
+    /**
+     * Human-readable description of the network. Changing this
+     * updates the name of the existing network.
+     */
+    readonly description?: pulumi.Input<string>;
     /**
      * Specifies whether the network resource has the
      * external routing facility. Valid values are true and false. Defaults to
@@ -153,6 +171,10 @@ export interface NetworkState {
      * existing network.
      */
     readonly shared?: pulumi.Input<string>;
+    /**
+     * A set of string tags for the network. 
+     */
+    readonly tags?: pulumi.Input<pulumi.Input<string>[]>;
     /**
      * The owner of the network. Required if admin wants to
      * create a network for another tenant. Changing this creates a new network.
@@ -182,6 +204,11 @@ export interface NetworkArgs {
      */
     readonly availabilityZoneHints?: pulumi.Input<pulumi.Input<string>[]>;
     /**
+     * Human-readable description of the network. Changing this
+     * updates the name of the existing network.
+     */
+    readonly description?: pulumi.Input<string>;
+    /**
      * Specifies whether the network resource has the
      * external routing facility. Valid values are true and false. Defaults to
      * false. Changing this updates the external attribute of the existing network.
@@ -209,6 +236,10 @@ export interface NetworkArgs {
      * existing network.
      */
     readonly shared?: pulumi.Input<string>;
+    /**
+     * A set of string tags for the network. 
+     */
+    readonly tags?: pulumi.Input<pulumi.Input<string>[]>;
     /**
      * The owner of the network. Required if admin wants to
      * create a network for another tenant. Changing this creates a new network.

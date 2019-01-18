@@ -88,12 +88,12 @@ func GetListener(ctx *pulumi.Context,
 
 // URN is this resource's unique name assigned by Pulumi.
 func (r *Listener) URN() *pulumi.URNOutput {
-	return r.s.URN
+	return r.s.URN()
 }
 
 // ID is this resource's unique identifier assigned by its provider.
 func (r *Listener) ID() *pulumi.IDOutput {
-	return r.s.ID
+	return r.s.ID()
 }
 
 // The administrative state of the Listener.
@@ -109,7 +109,7 @@ func (r *Listener) ConnectionLimit() *pulumi.IntOutput {
 }
 
 // The ID of the default pool with which the
-// Listener is associated. Changing this creates a new Listener.
+// Listener is associated.
 func (r *Listener) DefaultPoolId() *pulumi.StringOutput {
 	return (*pulumi.StringOutput)(r.s.State["defaultPoolId"])
 }
@@ -184,7 +184,7 @@ type ListenerState struct {
 	// for the Listener.
 	ConnectionLimit interface{}
 	// The ID of the default pool with which the
-	// Listener is associated. Changing this creates a new Listener.
+	// Listener is associated.
 	DefaultPoolId interface{}
 	// A reference to a Barbican Secrets
 	// container which stores TLS information. This is required if the protocol
@@ -231,7 +231,7 @@ type ListenerArgs struct {
 	// for the Listener.
 	ConnectionLimit interface{}
 	// The ID of the default pool with which the
-	// Listener is associated. Changing this creates a new Listener.
+	// Listener is associated.
 	DefaultPoolId interface{}
 	// A reference to a Barbican Secrets
 	// container which stores TLS information. This is required if the protocol

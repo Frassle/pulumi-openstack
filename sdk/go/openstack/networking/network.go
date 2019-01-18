@@ -19,21 +19,25 @@ func NewNetwork(ctx *pulumi.Context,
 	if args == nil {
 		inputs["adminStateUp"] = nil
 		inputs["availabilityZoneHints"] = nil
+		inputs["description"] = nil
 		inputs["external"] = nil
 		inputs["name"] = nil
 		inputs["region"] = nil
 		inputs["segments"] = nil
 		inputs["shared"] = nil
+		inputs["tags"] = nil
 		inputs["tenantId"] = nil
 		inputs["valueSpecs"] = nil
 	} else {
 		inputs["adminStateUp"] = args.AdminStateUp
 		inputs["availabilityZoneHints"] = args.AvailabilityZoneHints
+		inputs["description"] = args.Description
 		inputs["external"] = args.External
 		inputs["name"] = args.Name
 		inputs["region"] = args.Region
 		inputs["segments"] = args.Segments
 		inputs["shared"] = args.Shared
+		inputs["tags"] = args.Tags
 		inputs["tenantId"] = args.TenantId
 		inputs["valueSpecs"] = args.ValueSpecs
 	}
@@ -52,11 +56,13 @@ func GetNetwork(ctx *pulumi.Context,
 	if state != nil {
 		inputs["adminStateUp"] = state.AdminStateUp
 		inputs["availabilityZoneHints"] = state.AvailabilityZoneHints
+		inputs["description"] = state.Description
 		inputs["external"] = state.External
 		inputs["name"] = state.Name
 		inputs["region"] = state.Region
 		inputs["segments"] = state.Segments
 		inputs["shared"] = state.Shared
+		inputs["tags"] = state.Tags
 		inputs["tenantId"] = state.TenantId
 		inputs["valueSpecs"] = state.ValueSpecs
 	}
@@ -69,12 +75,12 @@ func GetNetwork(ctx *pulumi.Context,
 
 // URN is this resource's unique name assigned by Pulumi.
 func (r *Network) URN() *pulumi.URNOutput {
-	return r.s.URN
+	return r.s.URN()
 }
 
 // ID is this resource's unique identifier assigned by its provider.
 func (r *Network) ID() *pulumi.IDOutput {
-	return r.s.ID
+	return r.s.ID()
 }
 
 // The administrative state of the network.
@@ -90,6 +96,12 @@ func (r *Network) AdminStateUp() *pulumi.StringOutput {
 // creates a new network.
 func (r *Network) AvailabilityZoneHints() *pulumi.ArrayOutput {
 	return (*pulumi.ArrayOutput)(r.s.State["availabilityZoneHints"])
+}
+
+// Human-readable description of the network. Changing this
+// updates the name of the existing network.
+func (r *Network) Description() *pulumi.StringOutput {
+	return (*pulumi.StringOutput)(r.s.State["description"])
 }
 
 // Specifies whether the network resource has the
@@ -125,6 +137,11 @@ func (r *Network) Shared() *pulumi.StringOutput {
 	return (*pulumi.StringOutput)(r.s.State["shared"])
 }
 
+// A set of string tags for the network. 
+func (r *Network) Tags() *pulumi.ArrayOutput {
+	return (*pulumi.ArrayOutput)(r.s.State["tags"])
+}
+
 // The owner of the network. Required if admin wants to
 // create a network for another tenant. Changing this creates a new network.
 func (r *Network) TenantId() *pulumi.StringOutput {
@@ -147,6 +164,9 @@ type NetworkState struct {
 	// so that they are scheduled on different availability zones. Changing this
 	// creates a new network.
 	AvailabilityZoneHints interface{}
+	// Human-readable description of the network. Changing this
+	// updates the name of the existing network.
+	Description interface{}
 	// Specifies whether the network resource has the
 	// external routing facility. Valid values are true and false. Defaults to
 	// false. Changing this updates the external attribute of the existing network.
@@ -165,6 +185,8 @@ type NetworkState struct {
 	// by any tenant or not. Changing this updates the sharing capabalities of the
 	// existing network.
 	Shared interface{}
+	// A set of string tags for the network. 
+	Tags interface{}
 	// The owner of the network. Required if admin wants to
 	// create a network for another tenant. Changing this creates a new network.
 	TenantId interface{}
@@ -183,6 +205,9 @@ type NetworkArgs struct {
 	// so that they are scheduled on different availability zones. Changing this
 	// creates a new network.
 	AvailabilityZoneHints interface{}
+	// Human-readable description of the network. Changing this
+	// updates the name of the existing network.
+	Description interface{}
 	// Specifies whether the network resource has the
 	// external routing facility. Valid values are true and false. Defaults to
 	// false. Changing this updates the external attribute of the existing network.
@@ -201,6 +226,8 @@ type NetworkArgs struct {
 	// by any tenant or not. Changing this updates the sharing capabalities of the
 	// existing network.
 	Shared interface{}
+	// A set of string tags for the network. 
+	Tags interface{}
 	// The owner of the network. Required if admin wants to
 	// create a network for another tenant. Changing this creates a new network.
 	TenantId interface{}

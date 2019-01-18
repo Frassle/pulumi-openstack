@@ -16,8 +16,8 @@ export class Port extends pulumi.CustomResource {
      * @param id The _unique_ provider ID of the resource to lookup.
      * @param state Any extra arguments used during the lookup.
      */
-    public static get(name: string, id: pulumi.Input<pulumi.ID>, state?: PortState): Port {
-        return new Port(name, <any>state, { id });
+    public static get(name: string, id: pulumi.Input<pulumi.ID>, state?: PortState, opts?: pulumi.CustomResourceOptions): Port {
+        return new Port(name, <any>state, { ...opts, id: id });
     }
 
     /**
@@ -43,6 +43,11 @@ export class Port extends pulumi.CustomResource {
      */
     public readonly allowedAddressPairs: pulumi.Output<{ ipAddress: string, macAddress?: string }[] | undefined>;
     /**
+     * Human-readable description of the floating IP. Changing
+     * this updates the `description` of an existing port.
+     */
+    public readonly description: pulumi.Output<string | undefined>;
+    /**
      * The ID of the device attached to the port. Changing this
      * creates a new port.
      */
@@ -53,8 +58,14 @@ export class Port extends pulumi.CustomResource {
      */
     public readonly deviceOwner: pulumi.Output<string>;
     /**
-     * An array of desired IPs for this port. The structure is
-     * described below.
+     * An extra DHCP option that needs to be configured
+     * on the port. The structure is described below. Can be specified multiple
+     * times.
+     */
+    public readonly extraDhcpOptions: pulumi.Output<{ ipVersion?: number, name: string, value: string }[] | undefined>;
+    /**
+     * An array of desired IPs for
+     * this port. The structure is described below.
      */
     public readonly fixedIps: pulumi.Output<{ ipAddress?: string, subnetId: string }[] | undefined>;
     /**
@@ -72,6 +83,12 @@ export class Port extends pulumi.CustomResource {
      * this creates a new port.
      */
     public readonly networkId: pulumi.Output<string>;
+    /**
+     * Create a port with no fixed
+     * IP address. This will also remove any fixed IPs previously set on a port. `true`
+     * is the only valid value for this argument.
+     */
+    public readonly noFixedIp: pulumi.Output<boolean | undefined>;
     /**
      * If set to
      * `true`, then no security groups are applied to the port. If set to `false` and
@@ -94,6 +111,10 @@ export class Port extends pulumi.CustomResource {
      * the Compute Instance).
      */
     public readonly securityGroupIds: pulumi.Output<string[] | undefined>;
+    /**
+     * See Argument Reference above.
+     */
+    public readonly tags: pulumi.Output<string[] | undefined>;
     /**
      * The owner of the Port. Required if admin wants
      * to create a port for another tenant. Changing this creates a new port.
@@ -120,15 +141,19 @@ export class Port extends pulumi.CustomResource {
             inputs["allFixedIps"] = state ? state.allFixedIps : undefined;
             inputs["allSecurityGroupIds"] = state ? state.allSecurityGroupIds : undefined;
             inputs["allowedAddressPairs"] = state ? state.allowedAddressPairs : undefined;
+            inputs["description"] = state ? state.description : undefined;
             inputs["deviceId"] = state ? state.deviceId : undefined;
             inputs["deviceOwner"] = state ? state.deviceOwner : undefined;
+            inputs["extraDhcpOptions"] = state ? state.extraDhcpOptions : undefined;
             inputs["fixedIps"] = state ? state.fixedIps : undefined;
             inputs["macAddress"] = state ? state.macAddress : undefined;
             inputs["name"] = state ? state.name : undefined;
             inputs["networkId"] = state ? state.networkId : undefined;
+            inputs["noFixedIp"] = state ? state.noFixedIp : undefined;
             inputs["noSecurityGroups"] = state ? state.noSecurityGroups : undefined;
             inputs["region"] = state ? state.region : undefined;
             inputs["securityGroupIds"] = state ? state.securityGroupIds : undefined;
+            inputs["tags"] = state ? state.tags : undefined;
             inputs["tenantId"] = state ? state.tenantId : undefined;
             inputs["valueSpecs"] = state ? state.valueSpecs : undefined;
         } else {
@@ -138,15 +163,19 @@ export class Port extends pulumi.CustomResource {
             }
             inputs["adminStateUp"] = args ? args.adminStateUp : undefined;
             inputs["allowedAddressPairs"] = args ? args.allowedAddressPairs : undefined;
+            inputs["description"] = args ? args.description : undefined;
             inputs["deviceId"] = args ? args.deviceId : undefined;
             inputs["deviceOwner"] = args ? args.deviceOwner : undefined;
+            inputs["extraDhcpOptions"] = args ? args.extraDhcpOptions : undefined;
             inputs["fixedIps"] = args ? args.fixedIps : undefined;
             inputs["macAddress"] = args ? args.macAddress : undefined;
             inputs["name"] = args ? args.name : undefined;
             inputs["networkId"] = args ? args.networkId : undefined;
+            inputs["noFixedIp"] = args ? args.noFixedIp : undefined;
             inputs["noSecurityGroups"] = args ? args.noSecurityGroups : undefined;
             inputs["region"] = args ? args.region : undefined;
             inputs["securityGroupIds"] = args ? args.securityGroupIds : undefined;
+            inputs["tags"] = args ? args.tags : undefined;
             inputs["tenantId"] = args ? args.tenantId : undefined;
             inputs["valueSpecs"] = args ? args.valueSpecs : undefined;
             inputs["allFixedIps"] = undefined /*out*/;
@@ -183,6 +212,11 @@ export interface PortState {
      */
     readonly allowedAddressPairs?: pulumi.Input<pulumi.Input<{ ipAddress: pulumi.Input<string>, macAddress?: pulumi.Input<string> }>[]>;
     /**
+     * Human-readable description of the floating IP. Changing
+     * this updates the `description` of an existing port.
+     */
+    readonly description?: pulumi.Input<string>;
+    /**
      * The ID of the device attached to the port. Changing this
      * creates a new port.
      */
@@ -193,8 +227,14 @@ export interface PortState {
      */
     readonly deviceOwner?: pulumi.Input<string>;
     /**
-     * An array of desired IPs for this port. The structure is
-     * described below.
+     * An extra DHCP option that needs to be configured
+     * on the port. The structure is described below. Can be specified multiple
+     * times.
+     */
+    readonly extraDhcpOptions?: pulumi.Input<pulumi.Input<{ ipVersion?: pulumi.Input<number>, name: pulumi.Input<string>, value: pulumi.Input<string> }>[]>;
+    /**
+     * An array of desired IPs for
+     * this port. The structure is described below.
      */
     readonly fixedIps?: pulumi.Input<pulumi.Input<{ ipAddress?: pulumi.Input<string>, subnetId: pulumi.Input<string> }>[]>;
     /**
@@ -212,6 +252,12 @@ export interface PortState {
      * this creates a new port.
      */
     readonly networkId?: pulumi.Input<string>;
+    /**
+     * Create a port with no fixed
+     * IP address. This will also remove any fixed IPs previously set on a port. `true`
+     * is the only valid value for this argument.
+     */
+    readonly noFixedIp?: pulumi.Input<boolean>;
     /**
      * If set to
      * `true`, then no security groups are applied to the port. If set to `false` and
@@ -234,6 +280,10 @@ export interface PortState {
      * the Compute Instance).
      */
     readonly securityGroupIds?: pulumi.Input<pulumi.Input<string>[]>;
+    /**
+     * See Argument Reference above.
+     */
+    readonly tags?: pulumi.Input<pulumi.Input<string>[]>;
     /**
      * The owner of the Port. Required if admin wants
      * to create a port for another tenant. Changing this creates a new port.
@@ -262,6 +312,11 @@ export interface PortArgs {
      */
     readonly allowedAddressPairs?: pulumi.Input<pulumi.Input<{ ipAddress: pulumi.Input<string>, macAddress?: pulumi.Input<string> }>[]>;
     /**
+     * Human-readable description of the floating IP. Changing
+     * this updates the `description` of an existing port.
+     */
+    readonly description?: pulumi.Input<string>;
+    /**
      * The ID of the device attached to the port. Changing this
      * creates a new port.
      */
@@ -272,8 +327,14 @@ export interface PortArgs {
      */
     readonly deviceOwner?: pulumi.Input<string>;
     /**
-     * An array of desired IPs for this port. The structure is
-     * described below.
+     * An extra DHCP option that needs to be configured
+     * on the port. The structure is described below. Can be specified multiple
+     * times.
+     */
+    readonly extraDhcpOptions?: pulumi.Input<pulumi.Input<{ ipVersion?: pulumi.Input<number>, name: pulumi.Input<string>, value: pulumi.Input<string> }>[]>;
+    /**
+     * An array of desired IPs for
+     * this port. The structure is described below.
      */
     readonly fixedIps?: pulumi.Input<pulumi.Input<{ ipAddress?: pulumi.Input<string>, subnetId: pulumi.Input<string> }>[]>;
     /**
@@ -291,6 +352,12 @@ export interface PortArgs {
      * this creates a new port.
      */
     readonly networkId: pulumi.Input<string>;
+    /**
+     * Create a port with no fixed
+     * IP address. This will also remove any fixed IPs previously set on a port. `true`
+     * is the only valid value for this argument.
+     */
+    readonly noFixedIp?: pulumi.Input<boolean>;
     /**
      * If set to
      * `true`, then no security groups are applied to the port. If set to `false` and
@@ -313,6 +380,10 @@ export interface PortArgs {
      * the Compute Instance).
      */
     readonly securityGroupIds?: pulumi.Input<pulumi.Input<string>[]>;
+    /**
+     * See Argument Reference above.
+     */
+    readonly tags?: pulumi.Input<pulumi.Input<string>[]>;
     /**
      * The owner of the Port. Required if admin wants
      * to create a port for another tenant. Changing this creates a new port.

@@ -4,22 +4,25 @@
 
 import pulumi
 import pulumi.runtime
-from .. import utilities
+from .. import utilities, tables
 
 class GetSubnetResult(object):
     """
     A collection of values returned by getSubnet.
     """
-    def __init__(__self__, allocation_pools=None, cidr=None, dns_nameservers=None, enable_dhcp=None, gateway_ip=None, host_routes=None, ip_version=None, ipv6_address_mode=None, ipv6_ra_mode=None, name=None, network_id=None, region=None, subnet_id=None, subnetpool_id=None, tenant_id=None, id=None):
+    def __init__(__self__, allocation_pools=None, cidr=None, description=None, dns_nameservers=None, enable_dhcp=None, gateway_ip=None, host_routes=None, ip_version=None, ipv6_address_mode=None, ipv6_ra_mode=None, name=None, network_id=None, region=None, subnet_id=None, subnetpool_id=None, tenant_id=None, id=None):
         if allocation_pools and not isinstance(allocation_pools, list):
             raise TypeError('Expected argument allocation_pools to be a list')
         __self__.allocation_pools = allocation_pools
         """
         Allocation pools of the subnet.
         """
-        if cidr and not isinstance(cidr, basestring):
-            raise TypeError('Expected argument cidr to be a basestring')
+        if cidr and not isinstance(cidr, str):
+            raise TypeError('Expected argument cidr to be a str')
         __self__.cidr = cidr
+        if description and not isinstance(description, str):
+            raise TypeError('Expected argument description to be a str')
+        __self__.description = description
         if dns_nameservers and not isinstance(dns_nameservers, list):
             raise TypeError('Expected argument dns_nameservers to be a list')
         __self__.dns_nameservers = dns_nameservers
@@ -32,8 +35,8 @@ class GetSubnetResult(object):
         """
         Whether the subnet has DHCP enabled or not.
         """
-        if gateway_ip and not isinstance(gateway_ip, basestring):
-            raise TypeError('Expected argument gateway_ip to be a basestring')
+        if gateway_ip and not isinstance(gateway_ip, str):
+            raise TypeError('Expected argument gateway_ip to be a str')
         __self__.gateway_ip = gateway_ip
         if host_routes and not isinstance(host_routes, list):
             raise TypeError('Expected argument host_routes to be a list')
@@ -44,47 +47,48 @@ class GetSubnetResult(object):
         if ip_version and not isinstance(ip_version, int):
             raise TypeError('Expected argument ip_version to be a int')
         __self__.ip_version = ip_version
-        if ipv6_address_mode and not isinstance(ipv6_address_mode, basestring):
-            raise TypeError('Expected argument ipv6_address_mode to be a basestring')
+        if ipv6_address_mode and not isinstance(ipv6_address_mode, str):
+            raise TypeError('Expected argument ipv6_address_mode to be a str')
         __self__.ipv6_address_mode = ipv6_address_mode
-        if ipv6_ra_mode and not isinstance(ipv6_ra_mode, basestring):
-            raise TypeError('Expected argument ipv6_ra_mode to be a basestring')
+        if ipv6_ra_mode and not isinstance(ipv6_ra_mode, str):
+            raise TypeError('Expected argument ipv6_ra_mode to be a str')
         __self__.ipv6_ra_mode = ipv6_ra_mode
-        if name and not isinstance(name, basestring):
-            raise TypeError('Expected argument name to be a basestring')
+        if name and not isinstance(name, str):
+            raise TypeError('Expected argument name to be a str')
         __self__.name = name
-        if network_id and not isinstance(network_id, basestring):
-            raise TypeError('Expected argument network_id to be a basestring')
+        if network_id and not isinstance(network_id, str):
+            raise TypeError('Expected argument network_id to be a str')
         __self__.network_id = network_id
-        if region and not isinstance(region, basestring):
-            raise TypeError('Expected argument region to be a basestring')
+        if region and not isinstance(region, str):
+            raise TypeError('Expected argument region to be a str')
         __self__.region = region
         """
         See Argument Reference above.
         """
-        if subnet_id and not isinstance(subnet_id, basestring):
-            raise TypeError('Expected argument subnet_id to be a basestring')
+        if subnet_id and not isinstance(subnet_id, str):
+            raise TypeError('Expected argument subnet_id to be a str')
         __self__.subnet_id = subnet_id
-        if subnetpool_id and not isinstance(subnetpool_id, basestring):
-            raise TypeError('Expected argument subnetpool_id to be a basestring')
+        if subnetpool_id and not isinstance(subnetpool_id, str):
+            raise TypeError('Expected argument subnetpool_id to be a str')
         __self__.subnetpool_id = subnetpool_id
-        if tenant_id and not isinstance(tenant_id, basestring):
-            raise TypeError('Expected argument tenant_id to be a basestring')
+        if tenant_id and not isinstance(tenant_id, str):
+            raise TypeError('Expected argument tenant_id to be a str')
         __self__.tenant_id = tenant_id
-        if id and not isinstance(id, basestring):
-            raise TypeError('Expected argument id to be a basestring')
+        if id and not isinstance(id, str):
+            raise TypeError('Expected argument id to be a str')
         __self__.id = id
         """
         id is the provider-assigned unique ID for this managed resource.
         """
 
-def get_subnet(cidr=None, dhcp_disabled=None, dhcp_enabled=None, gateway_ip=None, ip_version=None, ipv6_address_mode=None, ipv6_ra_mode=None, name=None, network_id=None, region=None, subnet_id=None, subnetpool_id=None, tenant_id=None):
+async def get_subnet(cidr=None, description=None, dhcp_disabled=None, dhcp_enabled=None, gateway_ip=None, ip_version=None, ipv6_address_mode=None, ipv6_ra_mode=None, name=None, network_id=None, region=None, subnet_id=None, subnetpool_id=None, tenant_id=None):
     """
     Use this data source to get the ID of an available OpenStack subnet.
     """
     __args__ = dict()
 
     __args__['cidr'] = cidr
+    __args__['description'] = description
     __args__['dhcpDisabled'] = dhcp_disabled
     __args__['dhcpEnabled'] = dhcp_enabled
     __args__['gatewayIp'] = gateway_ip
@@ -97,11 +101,12 @@ def get_subnet(cidr=None, dhcp_disabled=None, dhcp_enabled=None, gateway_ip=None
     __args__['subnetId'] = subnet_id
     __args__['subnetpoolId'] = subnetpool_id
     __args__['tenantId'] = tenant_id
-    __ret__ = pulumi.runtime.invoke('openstack:networking/getSubnet:getSubnet', __args__)
+    __ret__ = await pulumi.runtime.invoke('openstack:networking/getSubnet:getSubnet', __args__)
 
     return GetSubnetResult(
         allocation_pools=__ret__.get('allocationPools'),
         cidr=__ret__.get('cidr'),
+        description=__ret__.get('description'),
         dns_nameservers=__ret__.get('dnsNameservers'),
         enable_dhcp=__ret__.get('enableDhcp'),
         gateway_ip=__ret__.get('gatewayIp'),

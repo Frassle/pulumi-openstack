@@ -19,8 +19,8 @@ export class FloatingIp extends pulumi.CustomResource {
      * @param id The _unique_ provider ID of the resource to lookup.
      * @param state Any extra arguments used during the lookup.
      */
-    public static get(name: string, id: pulumi.Input<pulumi.ID>, state?: FloatingIpState): FloatingIp {
-        return new FloatingIp(name, <any>state, { id });
+    public static get(name: string, id: pulumi.Input<pulumi.ID>, state?: FloatingIpState, opts?: pulumi.CustomResourceOptions): FloatingIp {
+        return new FloatingIp(name, <any>state, { ...opts, id: id });
     }
 
     /**
@@ -30,6 +30,10 @@ export class FloatingIp extends pulumi.CustomResource {
      * user or project.
      */
     public readonly address: pulumi.Output<string>;
+    /**
+     * Human-readable description for the floating IP.
+     */
+    public readonly description: pulumi.Output<string | undefined>;
     /**
      * Fixed IP of the port to associate with this floating IP. Required if
      * the port has multiple fixed IPs.
@@ -59,6 +63,10 @@ export class FloatingIp extends pulumi.CustomResource {
      */
     public readonly subnetId: pulumi.Output<string | undefined>;
     /**
+     * A set of string tags for the floating IP.
+     */
+    public readonly tags: pulumi.Output<string[] | undefined>;
+    /**
      * The target tenant ID in which to allocate the floating
      * IP, if you specify this together with a port_id, make sure the target port
      * belongs to the same tenant. Changing this creates a new floating IP (which
@@ -83,11 +91,13 @@ export class FloatingIp extends pulumi.CustomResource {
         if (opts && opts.id) {
             const state: FloatingIpState = argsOrState as FloatingIpState | undefined;
             inputs["address"] = state ? state.address : undefined;
+            inputs["description"] = state ? state.description : undefined;
             inputs["fixedIp"] = state ? state.fixedIp : undefined;
             inputs["pool"] = state ? state.pool : undefined;
             inputs["portId"] = state ? state.portId : undefined;
             inputs["region"] = state ? state.region : undefined;
             inputs["subnetId"] = state ? state.subnetId : undefined;
+            inputs["tags"] = state ? state.tags : undefined;
             inputs["tenantId"] = state ? state.tenantId : undefined;
             inputs["valueSpecs"] = state ? state.valueSpecs : undefined;
         } else {
@@ -96,11 +106,13 @@ export class FloatingIp extends pulumi.CustomResource {
                 throw new Error("Missing required property 'pool'");
             }
             inputs["address"] = args ? args.address : undefined;
+            inputs["description"] = args ? args.description : undefined;
             inputs["fixedIp"] = args ? args.fixedIp : undefined;
             inputs["pool"] = args ? args.pool : undefined;
             inputs["portId"] = args ? args.portId : undefined;
             inputs["region"] = args ? args.region : undefined;
             inputs["subnetId"] = args ? args.subnetId : undefined;
+            inputs["tags"] = args ? args.tags : undefined;
             inputs["tenantId"] = args ? args.tenantId : undefined;
             inputs["valueSpecs"] = args ? args.valueSpecs : undefined;
         }
@@ -119,6 +131,10 @@ export interface FloatingIpState {
      * user or project.
      */
     readonly address?: pulumi.Input<string>;
+    /**
+     * Human-readable description for the floating IP.
+     */
+    readonly description?: pulumi.Input<string>;
     /**
      * Fixed IP of the port to associate with this floating IP. Required if
      * the port has multiple fixed IPs.
@@ -148,6 +164,10 @@ export interface FloatingIpState {
      */
     readonly subnetId?: pulumi.Input<string>;
     /**
+     * A set of string tags for the floating IP.
+     */
+    readonly tags?: pulumi.Input<pulumi.Input<string>[]>;
+    /**
      * The target tenant ID in which to allocate the floating
      * IP, if you specify this together with a port_id, make sure the target port
      * belongs to the same tenant. Changing this creates a new floating IP (which
@@ -171,6 +191,10 @@ export interface FloatingIpArgs {
      * user or project.
      */
     readonly address?: pulumi.Input<string>;
+    /**
+     * Human-readable description for the floating IP.
+     */
+    readonly description?: pulumi.Input<string>;
     /**
      * Fixed IP of the port to associate with this floating IP. Required if
      * the port has multiple fixed IPs.
@@ -199,6 +223,10 @@ export interface FloatingIpArgs {
      * the floating IP network has multiple subnets.
      */
     readonly subnetId?: pulumi.Input<string>;
+    /**
+     * A set of string tags for the floating IP.
+     */
+    readonly tags?: pulumi.Input<pulumi.Input<string>[]>;
     /**
      * The target tenant ID in which to allocate the floating
      * IP, if you specify this together with a port_id, make sure the target port
